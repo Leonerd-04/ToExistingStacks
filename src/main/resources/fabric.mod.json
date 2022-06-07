@@ -3,7 +3,7 @@
   "id": "existing_stacks",
   "version": "${version}",
   "name": "To Existing Stacks",
-  "description": "Adds the functionality of the \"Add to Existing Stacks\" feature in Stardew Valley",
+  "description": "Adds the functionality of the \"Add to Existing Stacks\" feature in Stardew Valley. To use, simply press the up arrow when you open a container.",
   "authors": [
     "Ieonerd04"
   ],
