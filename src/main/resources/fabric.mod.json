@@ -1,10 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "to_existing_stacks",
+  "id": "existing_stacks",
   "version": "${version}",
-  "name": "To_existing_stacks",
-  "description": "",
-  "authors": [],
+  "name": "To Existing Stacks",
+  "description": "Adds the functionality of the \"Add to Existing Stacks\" feature in Stardew Valley",
+  "authors": [
+    "Ieonerd04"
+  ],
   "contact": {},
   "license": "LGPL-3.0",
   "icon": "",
