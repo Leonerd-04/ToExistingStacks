@@ -3,7 +3,9 @@ package Ieonerd04.ToExistingStacks.mixin;
 import Ieonerd04.ToExistingStacks.ToExistingStacks;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
@@ -29,13 +31,23 @@ public class MixinHandledScreen extends Screen {
 	@Inject(method = "keyPressed", at = @At("TAIL"))
 	private void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir){
 		if(ToExistingStacks.MOVE_TO_CONTAINER.matchesKey(keyCode, scanCode)){
-			onPressUp();
+			addToExistingStacks();
 		}
 	}
 
 	// Transfers the items in a players inventory to a container that already have stacks inside them
 	// Basically the main feature of this mod.
-	private void onPressUp(){
+	private void addToExistingStacks(){
+		// Prevents the keybinding from working on two types of screens:
+		// Inventory screens
+		// Merchant screens
+		// As here the toExistingStacks does literally nothing.
+		// There are some other situations where the result isn't too useful imo, like in the crafting tables,
+		// but I've left that for the end user to decide for themselves how useful it is.
+		if(((HandledScreen) (Object) this) instanceof AbstractInventoryScreen || ((HandledScreen) (Object) this) instanceof MerchantScreen){
+			return;
+		}
+
 		ScreenHandler handler = client.player.currentScreenHandler;
 
 		// This list tracks the types of items within the container
