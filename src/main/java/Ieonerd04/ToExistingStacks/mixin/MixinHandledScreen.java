@@ -23,6 +23,9 @@ public class MixinHandledScreen extends Screen {
 		super(title);
 	}
 
+	// The code for pressing the keybinding is injected into the keyPressed method of the HandledScreen class
+	// rather than being handled by the Fabric Api's ClientLifecycleEvents class
+	// because that doesn't work whenever the client isn't ticking (ie. in an inventory screen)
 	@Inject(method = "keyPressed", at = @At("TAIL"))
 	private void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir){
 		if(ToExistingStacks.MOVE_TO_CONTAINER.matchesKey(keyCode, scanCode)){
@@ -30,7 +33,8 @@ public class MixinHandledScreen extends Screen {
 		}
 	}
 
-	//Transfers the items in a players inventory to a container that already have stacks inside them
+	// Transfers the items in a players inventory to a container that already have stacks inside them
+	// Basically the main feature of this mod.
 	private void onPressUp(){
 		ScreenHandler handler = client.player.currentScreenHandler;
 
@@ -39,12 +43,14 @@ public class MixinHandledScreen extends Screen {
 		ArrayList<String> containerItems = new ArrayList<>();
 
 		// The slots handled by the ScreenHandler include both the container and inventory, in that order,
-		// So we have to account for that to separate the inventories
+		// so we have to account for that to separate the inventories
 		int numContainerSlots = handler.slots.size() - client.player.getInventory().main.size();
 
 		// Determines what types of items are in the container
 		for(int i = 0; i < numContainerSlots; i++){
 			String item = handler.getSlot(i).getStack().getItem().getTranslationKey();
+
+			// We want only one entry per type of item, and don't want to track empty slots as "air".
 			if(containerItems.contains(item) || item.equals(Items.AIR.getTranslationKey())) continue;
 
 			containerItems.add(item);
@@ -55,10 +61,9 @@ public class MixinHandledScreen extends Screen {
 		// Then shift-clicks them (basically)
 		for(int i = numContainerSlots; i < handler.slots.size(); i++){
 			if(containerItems.contains(handler.getSlot(i).getStack().getItem().getTranslationKey())){
-				//The shift-click call is made to the ClientPlayerInteractionManager for proper server-client communication
+				//The shift-click call is made via ClientPlayerInteractionManager for proper client-server communication
 				client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.QUICK_MOVE, client.player);
 			}
 		}
-
 	}
 }
