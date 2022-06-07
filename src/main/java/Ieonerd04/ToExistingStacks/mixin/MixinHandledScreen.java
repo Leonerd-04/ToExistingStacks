@@ -1,6 +1,7 @@
 package Ieonerd04.ToExistingStacks.mixin;
 
 import Ieonerd04.ToExistingStacks.ToExistingStacks;
+
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.item.Items;
