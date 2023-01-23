@@ -35,23 +35,23 @@ public class MixinHandledScreen extends Screen {
 		}
 	}
 
-	// Transfers the items in a players inventory to a container that already have stacks inside them
-	// Basically the main feature of this mod.
 	private void addToExistingStacks(){
-		// Prevents the keybinding from working on two types of screens:
-		// Inventory screens
-		// Merchant screens
-		// As here the toExistingStacks does literally nothing.
+		// Suppress NullPointerException warnings
+		if(client == null) return;
+		if(client.player == null) return;
+
+		Screen screen = client.currentScreen;
+
+		// Prevents the keybinding from working on screens where the mod doesn't do anything.
 		// There are some other situations where the result isn't too useful imo, like in the crafting tables,
 		// but I've left that for the end user to decide for themselves how useful it is.
-		if(((HandledScreen) (Object) this) instanceof AbstractInventoryScreen || ((HandledScreen) (Object) this) instanceof MerchantScreen){
+		if(screen instanceof AbstractInventoryScreen || screen instanceof MerchantScreen){
 			return;
 		}
 
 		ScreenHandler handler = client.player.currentScreenHandler;
 
-		// This list tracks the types of items within the container
-		// The items' translation keys will act as their identifiers to determine their type
+		// Items' translation keys will act as their identifiers to determine their type
 		ArrayList<String> containerItems = new ArrayList<>();
 
 		// The slots handled by the ScreenHandler include both the container and inventory, in that order,
