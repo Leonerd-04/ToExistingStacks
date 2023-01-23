@@ -59,7 +59,7 @@ public class MixinHandledScreen extends Screen {
 		// Determines what types of items are in the container
 		for(int i = 0; i < numContainerSlots; i++){
 			// Prevent considering the output of blocks like furnaces as spots to shift-click to.
-			if(i < 3 && screen instanceof BrewingStandScreen) {
+			if(i < 4 && screen instanceof BrewingStandScreen) {
 				i = 3;
 				continue;
 			}
