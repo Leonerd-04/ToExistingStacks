@@ -3,6 +3,7 @@ package Ieonerd04.ToExistingStacks.mixin;
 import Ieonerd04.ToExistingStacks.ToExistingStacks;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
@@ -61,6 +62,9 @@ public class MixinHandledScreen extends Screen {
 		// Determines what types of items are in the container
 		for(int i = 0; i < numContainerSlots; i++){
 			String item = handler.getSlot(i).getStack().getItem().getTranslationKey();
+
+			// Prevent considering the output of furnaces as spots to shift-click to.
+			if(i == 2 && screen instanceof AbstractFurnaceScreen) continue;
 
 			// We want only one entry per type of item, and don't want to track empty slots as "air".
 			if(containerItems.contains(item) || item.equals(Items.AIR.getTranslationKey())) continue;
