@@ -24,7 +24,7 @@ public class ToExistingStacks implements ClientModInitializer {
 				new KeyBinding(
 						"existing_stacks.move",
 						InputUtil.Type.KEYSYM,
-						GLFW.GLFW_KEY_UP, // Default keybinding is the up arrow
+						GLFW.GLFW_KEY_W, // Default keybinding is the W key
 						"existing_stacks.category"
 				)
 		);
