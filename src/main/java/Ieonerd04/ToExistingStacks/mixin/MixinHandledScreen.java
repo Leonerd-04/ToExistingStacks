@@ -4,8 +4,10 @@ import Ieonerd04.ToExistingStacks.ToExistingStacks;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(HandledScreen.class)
 public class MixinHandledScreen extends Screen {
@@ -75,12 +78,40 @@ public class MixinHandledScreen extends Screen {
 
 		// Loops through the player's inventory slots and determines which ones contain
 		// items that could be transferred to a particular container.
-		// Then shift-clicks them (basically)
 		for(int i = numContainerSlots; i < handler.slots.size(); i++){
-			if(containerItems.contains(handler.getSlot(i).getStack().getItem().getTranslationKey())){
+			if(containerItems.contains(handler.getSlot(i).getStack().getItem().getTranslationKey()) &&
+			hasSpace(handler.slots, handler.getSlot(i).getStack().getItem().getTranslationKey())){
 				//The shift-click call is made via ClientPlayerInteractionManager for proper client-server communication
 				client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.QUICK_MOVE, client.player);
 			}
 		}
+	}
+
+	// Checks if a container has space
+	// This is true if and only if:
+	// - There are empty slots
+	// - There are non-full slots of the same item type if the item can be stacked
+	private boolean hasSpace(List<Slot> slots, String item){
+		for(Slot slot : slots){
+			String itemType = slot.getStack().getItem().getTranslationKey();
+
+			if(itemType.equals(Items.AIR.getTranslationKey())){
+				return true;
+			}
+
+			if(!itemType.equals(item) || slot.getStack().isStackable()){
+				continue;
+			}
+
+			if(!isFull(slot.getStack())){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isFull(ItemStack stack){
+		return !stack.isStackable() || (stack.getCount() >= stack.getMaxCount());
 	}
 }
