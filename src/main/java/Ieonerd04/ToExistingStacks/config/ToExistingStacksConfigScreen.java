@@ -10,7 +10,7 @@ import net.minecraft.client.gui.widget.OptionListWidget;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 
-import static me.Ieonerd.simplehud.config.SimpleHUDConfig.OPTIONS;
+import Ieonerd04.ToExistingStacks.config.ToExistingStacksConfig;
 
 //Handles the screen that appears when using ModMenu
 //I'd like to credit TerraformersMC again, as this code is from the Config in ModMenu
@@ -24,7 +24,7 @@ public class ToExistingStacksConfigScreen extends GameOptionsScreen {
 
     protected void init(){
         buttonList = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
-        for(SimpleOption<?> option : OPTIONS) buttonList.addSingleOptionEntry(option);
+        for(SimpleOption<Boolean> option : ToExistingStacksConfig.OPTIONS) buttonList.addSingleOptionEntry(option);
         this.addDrawableChild(buttonList);
 
         this.addDrawableChild(
@@ -36,6 +36,6 @@ public class ToExistingStacksConfigScreen extends GameOptionsScreen {
     }
 
     public void removed(){
-        SimpleHUDConfig.save();
+        ToExistingStacksConfig.save();
     }
 }
