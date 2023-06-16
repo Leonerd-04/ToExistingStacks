@@ -1,5 +1,6 @@
 package Ieonerd04.ToExistingStacks;
 
+import Ieonerd04.ToExistingStacks.config.ToExistingStacksConfig;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
@@ -28,6 +29,8 @@ public class ToExistingStacks implements ClientModInitializer {
 						"existing_stacks.category"
 				)
 		);
+
+		ToExistingStacksConfig.load();
 	}
 
 

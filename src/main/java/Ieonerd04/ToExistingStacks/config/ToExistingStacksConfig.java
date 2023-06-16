@@ -43,7 +43,7 @@ public class ToExistingStacksConfig {
         OPTIONS = new ArrayList<>();
 
         // Default values in case loading fails
-        ignoreHotBar = createBoolOption("shouldIgnoreHotbar","simplehud.config.hotbar", true);
+        ignoreHotBar = createBoolOption("shouldIgnoreHotbar","simplehud.config.hotbar", false);
 
         LOGGER.info("Loading ToExistingStacks configuration file");
         prepareConfigFile();
