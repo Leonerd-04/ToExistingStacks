@@ -99,7 +99,7 @@ public class MixinHandledScreen extends Screen {
 				return true;
 			}
 
-			if(!itemType.equals(item) || slot.getStack().isStackable()){
+			if(!itemType.equals(item)){
 				continue;
 			}
 
