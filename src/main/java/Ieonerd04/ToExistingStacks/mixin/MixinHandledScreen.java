@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Ieonerd04.ToExistingStacks.config.ToExistingStacksConfig.ignoreHotBar;
+
 @Mixin(HandledScreen.class)
 public class MixinHandledScreen extends Screen {
 
@@ -59,6 +61,10 @@ public class MixinHandledScreen extends Screen {
 		// so we have to account for that to separate the inventories
 		int numContainerSlots = handler.slots.size() - client.player.getInventory().main.size();
 
+		// Accounts for ignoring the hotbar
+		// It is be the last 9 slots in an inventory
+		int numSlots = handler.slots.size() - (ignoreHotBar.getValue() ? 9 : 0);
+
 		// Determines what types of items are in the container
 		for(int i = 0; i < numContainerSlots; i++){
 			// Prevent considering the output of blocks like furnaces as spots to shift-click to.
@@ -78,7 +84,7 @@ public class MixinHandledScreen extends Screen {
 
 		// Loops through the player's inventory slots and determines which ones contain
 		// items that could be transferred to a particular container.
-		for(int i = numContainerSlots; i < handler.slots.size(); i++){
+		for(int i = numContainerSlots; i < numSlots; i++){
 			if(containerItems.contains(handler.getSlot(i).getStack().getItem().getTranslationKey()) &&
 			hasSpace(handler.slots, handler.getSlot(i).getStack().getItem().getTranslationKey())){
 				//The shift-click call is made via ClientPlayerInteractionManager for proper client-server communication
