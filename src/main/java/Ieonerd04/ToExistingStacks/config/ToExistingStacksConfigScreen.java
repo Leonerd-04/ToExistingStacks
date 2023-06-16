@@ -10,8 +10,6 @@ import net.minecraft.client.gui.widget.OptionListWidget;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 
-import Ieonerd04.ToExistingStacks.config.ToExistingStacksConfig;
-
 //Handles the screen that appears when using ModMenu
 //I'd like to credit TerraformersMC again, as this code is from the Config in ModMenu
 @Environment(EnvType.CLIENT)
