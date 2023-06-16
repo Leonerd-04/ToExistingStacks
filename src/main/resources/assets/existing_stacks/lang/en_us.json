@@ -1,4 +1,5 @@
 {
   "existing_stacks.category" : "To Existing Stacks",
-  "existing_stacks.move" : "Add to existing stacks"
+  "existing_stacks.move" : "Add to existing stacks",
+  "simplehud.config.hotbar" : "Ignore Hotbar"
 }
