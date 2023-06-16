@@ -53,7 +53,10 @@ public class ToExistingStacksConfig {
                 save();
             }
             FileReader reader = new FileReader(file);
-            BOOLEAN_MAP = GSON.fromJson(reader, MAP_TYPE);
+            HashMap<String, Boolean> map = GSON.fromJson(reader, MAP_TYPE);
+            for(String key : map.keySet()){
+                BOOLEAN_MAP.get(key).setValue(map.get(key));
+            }
 
         } catch (FileNotFoundException | JsonSyntaxException e) {
             LOGGER.error("Config file failed to load; Reverting to default values");
@@ -65,7 +68,7 @@ public class ToExistingStacksConfig {
     public static void save(){
         prepareConfigFile();
 
-        String json = GSON.toJson(BOOLEAN_MAP);
+        String json = GSON.toJson(getValues(BOOLEAN_MAP), MAP_TYPE);
 
         LOGGER.info("Saving config file");
 
@@ -75,6 +78,16 @@ public class ToExistingStacksConfig {
             LOGGER.error("Failed to save config file");
             e.printStackTrace();
         }
+    }
+
+    //Maps a hashmap of SimpleOptions to a hashmap of values
+    private static <T> HashMap<String, T> getValues(HashMap<String, SimpleOption<T>> optionMap){
+        HashMap<String, T> valMap = new HashMap<>();
+        for(String key : optionMap.keySet()){
+            valMap.put(key, optionMap.get(key).getValue());
+        }
+
+        return valMap;
     }
 
     public static boolean getBoolConfigValue(String key){
